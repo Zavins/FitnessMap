@@ -28,8 +28,9 @@ const linking = {
                     MainScreen: 'Main',
                     NewScreen: 'New',
                     WeightScreen: 'Weight',
+                    RecommendationScreen: 'Recommendation',
+                    DetailScreen: 'Detail'
                 },
-                
             }
         },
     },

@@ -3,21 +3,30 @@ import { useState } from 'react';
 import { StyleSheet } from 'react-native';
 import ScreenView from '../components/ScreenView';
 import { StackScreenProps } from '../navigation/Navigation';
-import { FAB, Text, TextInput } from 'react-native-paper';
+import { FAB, Snackbar, Text, TextInput } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { View } from '../components/Themed';
 
 
 
-const WeightScreen = ({ navigation }: StackScreenProps<'Weight'>) => {
+const WeightScreen = ({route, navigation }: StackScreenProps<'Weight'>) => {
+    const {age, height} = route.params
+    const [weight, setWeight] = useState(NaN)
+    const [visible, setVisible] = useState(false)
     const insets = useSafeAreaInsets();
     return (
         <ScreenView name='weight' style={{...styles.container, paddingBottom: insets.bottom, paddingTop: insets.top}}>
             <FAB
                 icon="arrow-right-bold"
                 style={styles.fab}
-                onPress={() => console.log('Pressed')}
+                onPress={() => weight ? navigation.navigate('Recommendation', {age: age, height: height, weight: weight}) : setVisible(true)}
             />
+            <Snackbar
+                visible={visible}
+                onDismiss={()=>{setVisible(false)}}
+            >
+                Please enter your weight
+            </Snackbar>
             <Text
                 variant="displayMedium" 
                 style={styles.title}
@@ -32,12 +41,14 @@ const WeightScreen = ({ navigation }: StackScreenProps<'Weight'>) => {
                 <TextInput
                     theme={{ roundness: 40 }} 
                     textAlign={'center'}
+                    keyboardType='numeric'
                     placeholder="weight"
                     maxLength={3}
                     mode="outlined"
                     multiline={true}
                     numberOfLines={1}
                     style={styles.textInput}
+                    onChangeText={(v)=>{setWeight(parseInt(v))}}
                 />
                 <Text variant="displayMedium" style={styles.header}>
                     lb

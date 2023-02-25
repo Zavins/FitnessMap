@@ -3,20 +3,29 @@ import { useState } from 'react';
 import { StyleSheet } from 'react-native';
 import ScreenView from '../components/ScreenView';
 import { StackScreenProps } from '../navigation/Navigation';
-import { FAB, Text, TextInput } from 'react-native-paper';
+import { FAB, Snackbar, Text, TextInput } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 
 
 const AgeScreen = ({ navigation }: StackScreenProps<'Age'>) => {
+    const [age, setAge] = useState(0)
     const insets = useSafeAreaInsets();
+    const [visible, setVisible] = useState(false)
+
     return (
         <ScreenView name='age' style={{...styles.container, paddingBottom: insets.bottom, paddingTop: insets.top}}>
             <FAB
                 icon="arrow-right-bold"
                 style={styles.fab}
-                onPress={() => navigation.navigate("Height")}
+                onPress={() => age ? navigation.navigate("Height", {age: age}) : setVisible(true)}
             />
+            <Snackbar
+                visible={visible}
+                onDismiss={()=>{setVisible(false)}}
+            >
+                Please enter your age
+            </Snackbar>
             <Text
                 variant="displayMedium" 
                 style={styles.title}
@@ -28,12 +37,14 @@ const AgeScreen = ({ navigation }: StackScreenProps<'Age'>) => {
             </Text>
             <TextInput
                 theme={{ roundness: 40 }} 
+                onChangeText={(v)=>{setAge(parseInt(v))}}
+                keyboardType='numeric'
                 textAlign={'center'}
                 placeholder="age"
                 maxLength={2}
                 mode="outlined"
                 multiline={true}
-                numberOfLines={1}
+                numberOfLines={0}
                 style={styles.textInput}
             />
             
