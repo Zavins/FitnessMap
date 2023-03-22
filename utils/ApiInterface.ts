@@ -12,6 +12,12 @@ export interface DishProps{
     image_url: string
 }
 
+export interface SportProps{
+    name: string
+    image_url: string
+    time: string
+}
+
 export interface HealthProps{
     height: Height,
     weight: number,
